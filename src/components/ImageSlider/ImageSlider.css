@@ -1,0 +1,38 @@
+
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.image-container img {
+    position: absolute;
+    width: 100%;
+    height: 90%; 
+    object-fit: contain;
+    top: 0;
+    left: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.image-container p {
+    position: absolute;
+    width: 100%;
+    top: 90%; 
+    left: 0;
+    /* margin: 10px 0;  */
+    /* padding: 0 20px;  */
+    transition: opacity 1s ease-in-out;
+    box-sizing: border-box; 
+}
+
+.fade-image.fade-in {
+    opacity: 1;
+}
+
+.fade-image.fade-out {
+    opacity: 0;
+}

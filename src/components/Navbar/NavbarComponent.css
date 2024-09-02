@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Neucha&family=Pacifico&display=swap');
+
+.active{
+    font-weight: bold;
+}
+
+/* .navBrand{
+    font-family: "Neucha", cursive;
+    font-weight: 800;
+    font-style: normal;
+    color: #1A73E8;
+    font-size: 3rem;
+} */
+
+
+/* .nav{
+    margin-bottom: 1000px;
+}
+
+.navbar {
+    
+    z-index: 1030;
+    
+  }
+  
+
+  
+  .navbar-nav {
+    
+    margin-left: auto;
+  }
+  
+  .navbar-toggler {
+    
+    border: none;
+  }
+  
+  @media (max-width: 991.98px) {
+    .navbar-collapse {
+      
+      display: flex;
+      flex-direction: column;
+    }
+  }
+   */

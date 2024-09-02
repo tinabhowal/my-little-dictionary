@@ -3,13 +3,28 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { Provider } from 'react-redux';
+import store from './store/store';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+if (!process.env.REACT_APP_CLIENT_ID) {
+  throw new Error('REACT_APP_CLIENT_ID environment variable is not defined');
+}
+const clientId: string = process.env.REACT_APP_CLIENT_ID;
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <App />
+    <GoogleOAuthProvider clientId={clientId}>
+      <Provider store={store}>
+      <App />
+      </Provider>
+      </GoogleOAuthProvider>
   </React.StrictMode>
 );
 

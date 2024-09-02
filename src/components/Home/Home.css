@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Neucha&family=Pacifico&display=swap');
+
+
+
+
+body{
+    font-family: "Neucha", cursive;
+    font-weight: 800;
+    font-style: normal;
+    color: #1A73E8;
+    font-size: 3rem;
+    text-align: center;
+}
+
+/* body{
+  text-align: center;
+} */
+ 
+.appHeading {
+  font-family: "Neucha", cursive;
+  font-weight: 800;
+  font-style: normal;
+  color: #1A73E8;
+  font-size: 3rem;
+}
+
+.translationDiv{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* gap: 3rem; */
+  padding:1rem;
+}
+
+
+.translateFrom, .translatedTo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.translationButton, .saveTranslation{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    margin-top: 2rem;
+
+}
+
