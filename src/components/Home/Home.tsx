@@ -160,6 +160,9 @@ const Home = () => {
   //   localStorage.removeItem('access_token');
   // };
 
+  const emptyText = () => {
+    setText('');
+  }
   
 
   return (
@@ -184,7 +187,8 @@ const Home = () => {
                     <option value="French">French</option>
                     <option value="Spanish">Spanish</option>
                   </Form.Select>
-                  <Form.Control
+                  
+                  {/* <Form.Control
                     as="textarea"
                     rows={3}
                     value={text}
@@ -192,6 +196,49 @@ const Home = () => {
                     placeholder={`Enter text in ${sourceLanguage}`}
                     className="mt-3"
                   />
+                    <Button
+                      variant="light"
+                      onClick={emptyText}
+                      style={{
+                        border: 'none',
+                        fontSize: '1rem',
+                        lineHeight: '1',
+                        padding: '0.25rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                       &times;
+                    </Button> */}
+
+
+<div style={{ position: 'relative' }}>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      value={text}
+                      onChange={(e) => setText(e.target.value)}
+                      placeholder={`Enter text in ${sourceLanguage}`}
+                      className="mt-3"
+                    />
+                    <Button
+                      variant="light"
+                      onClick={emptyText}
+                      style={{
+                        position: 'absolute',
+                        top: '10px',
+                        right: '10px',
+                        border: 'none',
+                        fontSize: '1rem',
+                        lineHeight: '1',
+                        padding: '0.25rem',
+                        cursor: 'pointer',
+                        backgroundColor: 'transparent'
+                      }}
+                    >
+                      &times;
+                    </Button>
+                  </div>
+                
                 </Form.Group>
               </Col>
               
@@ -213,6 +260,7 @@ const Home = () => {
                     <option value="French">French</option>
                     <option value="Spanish">Spanish</option>
                   </Form.Select>
+
                 </Form.Group>
               </Col>
             </Row>
@@ -256,8 +304,6 @@ const Home = () => {
     </>
   );
 
-
-  
 };
 
 export default Home;
