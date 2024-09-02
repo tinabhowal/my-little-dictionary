@@ -49,3 +49,23 @@ body{
 
 }
 
+/* @media (max-width: 480px) {
+  .googleButton {
+      margin-top: auto;
+  }
+} */
+
+/* Add this to your CSS file */
+
+@media (max-width: 480px) {
+  .container-flex {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100vh; /* Full viewport height */
+  }
+
+  .googleButton {
+      margin-top: auto; /* Pushes the button to the bottom */
+  }
+}

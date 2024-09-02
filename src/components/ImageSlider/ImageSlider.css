@@ -1,4 +1,4 @@
-
+/* 
 
 .image-container {
     position: relative;
@@ -23,10 +23,10 @@
     width: 100%;
     top: 90%; 
     left: 0;
-    /* margin: 10px 0;  */
-    /* padding: 0 20px;  */
     transition: opacity 1s ease-in-out;
     box-sizing: border-box; 
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 .fade-image.fade-in {
@@ -35,4 +35,60 @@
 
 .fade-image.fade-out {
     opacity: 0;
+}
+
+@media (max-width: 480px) {
+    .image-container p {
+        font-size: 0.8em; 
+        padding: 6px;
+    }
+} */
+
+
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: auto; /* Adjust height based on content */
+    overflow: hidden;
+    text-align: center;
+    padding-bottom: 20px; /* Extra space for text */
+}
+
+.image-container img {
+    width: 100%;
+    height: auto; 
+    object-fit: contain;
+    transition: opacity 1s ease-in-out;
+}
+
+.image-container p {
+    position: relative;
+    width: 100%;
+    margin-top: 10px; /* Space between image and text */
+    padding: 10px 20px; 
+    box-sizing: border-box; 
+    white-space: normal;
+    word-wrap: break-word;
+    font-size: 1em;
+    transition: opacity 1s ease-in-out;
+}
+
+.fade-image.fade-in {
+    opacity: 1;
+}
+
+.fade-image.fade-out {
+    opacity: 0;
+}
+
+@media (max-width: 480px) {
+    .image-container p {
+        font-size: 0.9em; /* Slightly reduce font size on small screens */
+        padding: 6px 10px;
+    }
+
+    .image-container {
+        padding-bottom: 10px; /* Adjust bottom padding for smaller screens */
+    }
 }

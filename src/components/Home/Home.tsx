@@ -165,7 +165,9 @@ const Home = () => {
   return (
     <>
       <NavbarComponent />
-      <Container style={{marginTop: '100px'}}>
+      <Container 
+      // className="container-flex" 
+      style={{marginTop: '100px'}}>
         {!profile && <ImageSlider />}
         {profile ? (
           <div>
@@ -247,7 +249,7 @@ const Home = () => {
           </div>
         ) : (
           <Row className="mt-5 justify-content-center">
-            <Button onClick={() => login()}>Sign in with Google 🚀</Button>
+            <Button className='googleButton' onClick={() => login()}>Sign in with Google 🚀</Button>
           </Row>
         )}
       </Container>
