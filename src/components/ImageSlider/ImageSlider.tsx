@@ -35,16 +35,21 @@ return () => {
 
   return (
     <div className="image-container">
+        <div className={`fade-image ${fadeOut? 'fade-out' : 'fade-in'}`}>
         <img
+        className={`fade-image ${fadeOut? 'fade-out' : 'fade-in'}`}
         src={images[currentImage].img}
         alt='sliding content'
-        className={`fade-image ${fadeOut? 'fade-out' : 'fade-in'}`}
         />
+        </div>
         
-        
+        <div className={`fade-image ${fadeOut? 'fade-out' : 'fade-in'}`}>
         <p className={`fade-image ${fadeOut? 'fade-out' : 'fade-in'}`}>{images[currentImage].text}</p>
+        </div>
     </div> 
   )
+
+
 }
 
 export default ImageSlider
