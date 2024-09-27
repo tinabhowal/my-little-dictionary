@@ -109,11 +109,15 @@ const GameSection = () => {
     
                 const textData = await response.text();
                 const data = JSON.parse(textData);
-                console.log('raw data', textData);
+        
+                //console.log('raw data', textData);
     
                 // Ensure gameContent is an array
                 const arrayedGameContent = Array.isArray(data.gameContent) ? data.gameContent : [data.gameContent];
     
+                if(arrayedGameContent.length < 1){
+                    alert('Please save some translations before starting the game')
+                }else{
                 // Convert options to an array of objects if it's not already
                 const arrayedGameContentAndOptions = arrayedGameContent.map((item: any) => ({
                     ...item,
@@ -126,6 +130,7 @@ const GameSection = () => {
     
                 setGameContent(arrayedGameContentAndOptions);
                 localStorage.setItem('gameContent', JSON.stringify(data.gameContent));
+            }
             }
         } catch (error) {
             console.error('Error:', error);
