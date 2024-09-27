@@ -21,6 +21,10 @@ const userSlice = createSlice({
             state.profile = action.payload
             // state.id = action.payload.id
         },
+
+        setId(state, action: PayloadAction<{id: string}>){
+            state.id = action.payload.id
+        },
         
         clearUser(state){
             state.access_token = null;
@@ -61,7 +65,7 @@ const translateSlice = createSlice({
 
 
 
-export const {setUser, setProfile, clearUser} = userSlice.actions;
+export const {setUser, setProfile, setId, clearUser} = userSlice.actions;
 export const {translationRequested, translationSuccessful, translationFailed} = translateSlice.actions;
 
 

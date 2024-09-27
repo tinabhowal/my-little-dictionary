@@ -8,6 +8,8 @@ import { clearUser } from '../../store/store';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './NavbarComponent.css';
 
+ 
+
 const NavbarComponent = () => {
 
 const location = useLocation();
@@ -19,10 +21,17 @@ const dispatch = useDispatch();
 
 const userId = localStorage.getItem('userId');
 
+
+
+
+
 const handleLogout = () => {
   googleLogout();
   dispatch(clearUser());
-  localStorage.clear();
+  localStorage.removeItem( 'userId');
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('translation');
+  localStorage.removeItem('gameContent');
   navigate('/');
 }
 

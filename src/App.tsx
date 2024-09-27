@@ -230,6 +230,7 @@ import Home from './components/Home/Home';
 import GameSection from './components/GameSection/GameSection';
 import GetTranslations from './components/GetTranslations/GetTranslations';
 import './App.css';
+import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
 
 
 const App = () => {
@@ -239,6 +240,7 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/gameSection' element={<GameSection />} />
         <Route path='/myWordBook' element={<GetTranslations />} />
+        <Route path='/privacyPolicy' element={<PrivacyPolicy />} />
       </Routes>
     </Router>
   )

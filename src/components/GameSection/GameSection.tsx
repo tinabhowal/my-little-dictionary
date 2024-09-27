@@ -1,3 +1,6 @@
+
+
+
 import React, { useEffect, useState } from 'react';
 import { GameContent } from '../../types/types';
 import NavbarComponent from '../Navbar/NavbarComponent';
@@ -24,45 +27,115 @@ const GameSection = () => {
         }
     },[userId])
 
+    // const startGame = async () => {
+    //     setLoading(true);
+    //     try {
+    //         // const savedGameContent = localStorage.getItem('gameContent');
+    
+    //         // if (savedGameContent && savedGameContent !== 'undefined') {
+    //         //     try {
+    //         //         const parsedContent = JSON.parse(savedGameContent);
+    //         //         // const validatedContent = parsedContent.map((item: any) => ({
+    //         //         //     ...item,
+    //         //         //     options: Array.isArray(item.options) ? item.options : [item.options],
+    //         //         // }));
+    //         //         setGameContent(parsedContent);
+    //         //     } catch (error) {
+    //         //         console.error('Error parsing gameContent from localStorage:', error);
+    //         //     }
+    //         // } else {
+                
+    //             const response = await fetch('https://suwg4eyhsj.execute-api.ap-south-1.amazonaws.com/gamifyLearning', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 body: JSON.stringify({ userId: userId }),
+    //             });
+    
+    //             const textData = await response.text(); 
+                
+    //             const data = JSON.parse(textData);
+    //             console.log('raw data', textData);
+
+    //             const arrayedGameContent = Array.isArray(data.gameContent)? data.gameContent : [data.gameContent];
+
+    //             const arrayedGameContentAndOptions = arrayedGameContent.map((item:any) => ({
+    //                 ...item,
+    //                 options: Array.isArray(item.options)? item.options : Object.keys(item.options).map((key) => ({
+    //                     [key] : item.options[key]
+    //                 }))
+    //             }));
+
+    //             setGameContent(arrayedGameContentAndOptions);
+    //             // if (Array.isArray(data.gameContent)) {
+    //             //     setGameContent(data.gameContent);
+
+    //             //     //localStorage.setItem('gameContent', JSON.stringify(data.gameContent));
+    //             // } else {
+    //             //     setGameContent([data.gameContent]);
+    //             //     //localStorage.setItem('gameContent', JSON.stringify(data.gameContent));
+    //             // }
+    //         // }
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+    
+
     const startGame = async () => {
-        
         setLoading(true);
         try {
             const savedGameContent = localStorage.getItem('gameContent');
-
-            if(savedGameContent){
-                setGameContent(JSON.parse(savedGameContent));
-                // console.log('game loaded from localstorage')
+    
+            if (savedGameContent && savedGameContent !== 'undefined') {
+                try {
+                    const parsedContent = JSON.parse(savedGameContent);
+                    setGameContent(parsedContent);
+                } catch (error) {
+                    console.error('Error parsing gameContent from localStorage:', error);
+                }
             } else {
-
-            
-            const response = await fetch('https://suwg4eyhsj.execute-api.ap-south-1.amazonaws.com/gamifyLearning', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId: userId }),
-            });
-
-            const data = await response.json();
-            // console.log('Fetched gameContent:', data.gameContent);
-
-            if (Array.isArray(data.gameContent)) {
-                setGameContent(data.gameContent);
-                localStorage.setItem('gameContent', JSON.stringify(data.gameContent));
-            } else {
-                setGameContent([data.gameContent]);
+                // Fetching data from the API if no saved content is found
+                const response = await fetch('https://suwg4eyhsj.execute-api.ap-south-1.amazonaws.com/gamifyLearning', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId: userId }),
+                });
+    
+                const textData = await response.text();
+                const data = JSON.parse(textData);
+                console.log('raw data', textData);
+    
+                // Ensure gameContent is an array
+                const arrayedGameContent = Array.isArray(data.gameContent) ? data.gameContent : [data.gameContent];
+    
+                // Convert options to an array of objects if it's not already
+                const arrayedGameContentAndOptions = arrayedGameContent.map((item: any) => ({
+                    ...item,
+                    options: Array.isArray(item.options)
+                        ? item.options
+                        : Object.keys(item.options).map((key) => ({
+                            [key]: item.options[key]
+                        })),
+                }));
+    
+                setGameContent(arrayedGameContentAndOptions);
                 localStorage.setItem('gameContent', JSON.stringify(data.gameContent));
             }
-        }
-
         } catch (error) {
             console.error('Error:', error);
         } finally {
             setLoading(false);
         }
-    
     };
+    
+
+    
 
     const handleAnswer = (selectedOption: string) => {
         if (gameContent) {
@@ -93,7 +166,7 @@ const GameSection = () => {
         setCurrentQuestionIndex(0);
         setScore(0);
         setGameContent(null);
-        localStorage.removeItem('gameContent');
+        //localStorage.removeItem('gameContent');
     }
     return (
         <div>
@@ -126,10 +199,11 @@ const GameSection = () => {
                                     {!feedback && (
                                         <div>
                                             <p><strong>Question:</strong> {gameContent[currentQuestionIndex].question && gameContent[currentQuestionIndex].question}</p>
-                                            {gameContent[currentQuestionIndex].options && gameContent[currentQuestionIndex].options.map((option, index) => (
+                                            {Array.isArray(gameContent[currentQuestionIndex].options) && gameContent[currentQuestionIndex].options.map((option, index) => (
                                                 <>
                                                 <Button
-                                                    key={`${option} - ${index}`}
+                                                    // key={`${option} - ${index}`}
+                                                    key={index}
                                                     variant='outline-primary'
                                                     onClick={() => handleAnswer(option)}
                                                     // className='d-block mb-2'
@@ -161,5 +235,4 @@ const GameSection = () => {
 };
 
 export default GameSection;
-
 

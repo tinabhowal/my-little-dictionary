@@ -8,7 +8,7 @@ export interface UserProfile {
   export interface UserState {
     access_token: string | null;
     profile: UserProfile | null;
-    id: string | null;
+    id: string | null ;
   }
 
   export interface TranslateText {
