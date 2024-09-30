@@ -2,14 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { translation } from '../../types/types';
 import NavbarComponent from '../Navbar/NavbarComponent';
 import {Container, Row, Col, Button, InputGroup, Form, Card, Modal } from 'react-bootstrap';
+// import { useDispatch } from 'react-redux';
 import './GetTranslations.css';
-
+// import { saved } from '../../store/store';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../../store/store';
 const GetTranslations = () => {
     const [translations, setTranslations] = useState<translation[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [ showModal, setShowModal ] = useState<boolean>(false); 
     const [ selectedTranslationKey, setSelectedTranslationKey ] = useState<string | null>(null);
-    
+
+    // const savedd = useSelector((state: RootState) => state.saved.saved )
+    // console.log('saved', savedd)
+    // const dispatch = useDispatch();
+
     const loadUserId = () => {
         return localStorage.getItem('userId')
       }
@@ -18,14 +25,7 @@ const GetTranslations = () => {
 
     //console.log(userId);
 
-    useEffect(() => {
-        if (userId) {
-            
-            getTranslations(userId);
-        }else{
-            alert('Please login to see the saved translations')
-        }
-    }, [userId]);
+   
 
     const getTranslations = async (userId: string) => {
         if (!userId) {
@@ -44,10 +44,13 @@ const GetTranslations = () => {
             });
 
             const data = await response.json();
-            // console.log(data);
+            
 
             if (Array.isArray(data)) {
                 setTranslations(data);
+                // dispatch(saved(data));
+                // console.log('saved', savedd)
+
             } else {
                 console.error('Unexpected response format:', data);
                 setTranslations([]); // Ensure translations is always an array
@@ -57,6 +60,16 @@ const GetTranslations = () => {
             setTranslations([]); // Set to empty array on error
         }
     };
+
+
+    useEffect(() => {
+        if (userId) {
+            
+            getTranslations(userId);
+        }else{
+            alert('Please login to see the saved translations')
+        }
+    }, [userId]);
 
     const handleToggleTranslations = () => {
         if (translations.length > 0) {
@@ -108,93 +121,92 @@ const GetTranslations = () => {
         t.Translation.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+
+
     return (
         <div>
             <NavbarComponent />
-            <Container style={{marginTop: '100px'}}>
-               
-                    {userId && (
-                        <>
-                    <Row className='d-flex  justify-content-center mt-4'>
-                       <Col className='d-flex justify-content-center'> 
-                            <Button variant='primary' onClick={handleToggleTranslations}>
-                            {translations.length > 0 ? 'Hide translations' : 'See the saved translations'}
-                            </Button>
-                        </Col>
-                    </Row>    
-                    
-            {translations && translations.length > 0 && (
-                <div>
-                    <Row className='d-flex  justify-content-center mt-4'>
-                    <Col className='d-flex justify-content-center'> 
-                            <InputGroup>
-                            <Form.Control
-                                type='text'
-                                value={searchTerm}
-                                placeholder='Search your saved translations'
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />    
-                            </InputGroup>
-                        </Col>
-                    </Row>
-
-                    <Row className='d-flex mt-4'>
-                     
-                    {/* <ul> */}
-                        {filteredTranslations.length > 0 ? (
-                            filteredTranslations.map((t, i) => (
-                                <Col md={6} lg={4} className='mb-4' key={i}>
-                                    {/* {t.Text} : {t.Translation} */}
-                                    <Card className='card'>
-                                        <Card.Body>
-                                            <Card.Title>{t.Text}</Card.Title>
-                                            <Card.Text>{t.Translation}</Card.Text>
-                                            <div className="d-flex justify-content-center mt-3">
-                                            <Button
-                                              variant='danger'
-                                              onClick={() => handleDeleteClick(t.TranslationKey)}>
-                                                Delete
-                                              </Button>
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            ))
+            <Container style={{ marginTop: '100px' }}>
+    
+                {userId && (
+                    <>
+                        <Row className='d-flex justify-content-center mt-4'>
+                            <Col className='d-flex justify-content-center'>
+                                <Button variant='primary' onClick={handleToggleTranslations}>
+                                    {translations.length > 0 ? 'Hide translations' : 'See the saved translations'}
+                                </Button>
+                            </Col>
+                        </Row>
+    
+                        {translations && translations.length > 0 ? (
+                            <div>
+                                <Row className='d-flex justify-content-center mt-4'>
+                                    <Col className='d-flex justify-content-center'>
+                                        <InputGroup>
+                                            <Form.Control
+                                                type='text'
+                                                value={searchTerm}
+                                                placeholder='Search your saved translations'
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                            />
+                                        </InputGroup>
+                                    </Col>
+                                </Row>
+    
+                                <Row className='d-flex mt-4'>
+                                    {filteredTranslations.length > 0 ? (
+                                        filteredTranslations.map((t, i) => (
+                                            <Col md={6} lg={4} className='mb-4' key={i}>
+                                                <Card className='card'>
+                                                    <Card.Body>
+                                                        <Card.Title>{t.Text}</Card.Title>
+                                                        <Card.Text>{t.Translation}</Card.Text>
+                                                        <div className="d-flex justify-content-center mt-3">
+                                                            <Button
+                                                                variant='danger'
+                                                                onClick={() => handleDeleteClick(t.TranslationKey)}
+                                                            >
+                                                                Delete
+                                                            </Button>
+                                                        </div>
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                        ))
+                                    ) : (
+                                        <p>No translations found.</p>
+                                    )}
+                                </Row>
+                            </div>
                         ) : (
-                            <li>No translations found.</li>
+                            <Row className='d-flex justify-content-center mt-4'>
+                                <Col className='d-flex justify-content-center'>
+                                    <p>Please save translations to populate your workbook.</p>
+                                </Col>
+                            </Row>
                         )}
-                    {/* </ul> */}
-                    </Row>
-                </div>
-            )}
-            </>
-
-            )}
+                    </>
+                )}
+    
             </Container>
-
+    
             <Modal show={showModal} onHide={handleCancelDelete}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Deletion</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to delete this translation?</Modal.Body>
                 <Modal.Footer>
-                    <Button
-                      variant='secondary' 
-                      onClick={handleCancelDelete}
-                      >
+                    <Button variant='secondary' onClick={handleCancelDelete}>
                         Cancel
-                      </Button>
-
-                      <Button
-                        variant='danger'
-                        onClick={handleConfirmDelete}
-                        >
-                          Delete
-                        </Button>
+                    </Button>
+                    <Button variant='danger' onClick={handleConfirmDelete}>
+                        Delete
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </div>
     );
+    
 }
 
 export default GetTranslations;

@@ -63,16 +63,30 @@ const translateSlice = createSlice({
     }
 })
 
+const initialSavedTranslationState = {
+    saved: []
+}
+const savedTranslationSlice = createSlice({
+    name: 'savedTranslation',
+    initialState: initialSavedTranslationState,
+    reducers: {
+        saved: (state, action) => {
+            state.saved = action.payload;
+            localStorage.setItem('savedTranslations', JSON.stringify(state.saved))
+        }
+    }
+})
 
 
 export const {setUser, setProfile, setId, clearUser} = userSlice.actions;
 export const {translationRequested, translationSuccessful, translationFailed} = translateSlice.actions;
-
+export const {saved} = savedTranslationSlice.actions;
 
 const store = configureStore({
     reducer: {
         user: userSlice.reducer,
-        translation: translateSlice.reducer
+        translation: translateSlice.reducer,
+        saved: savedTranslationSlice.reducer
     }
 })
 
