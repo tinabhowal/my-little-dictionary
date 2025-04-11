@@ -28,11 +28,11 @@ const userId = localStorage.getItem('userId');
 const handleLogout = () => {
   googleLogout();
   dispatch(clearUser());
-  // localStorage.removeItem( 'userId');
-  // localStorage.removeItem('access_token');
-  // localStorage.removeItem('translation');
-  // localStorage.removeItem('gameContent');
-  localStorage.clear()
+  localStorage.removeItem( 'userId');
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('translation');
+  localStorage.removeItem('gameContent');
+  //localStorage.clear()
   navigate('/');
 }
 
