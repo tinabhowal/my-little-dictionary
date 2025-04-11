@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { translation } from '../../types/types';
 import NavbarComponent from '../Navbar/NavbarComponent';
-import {Container, Row, Col, Button, InputGroup, Form, Card, Modal } from 'react-bootstrap';
+import {Container, Row, Col, Button, InputGroup, Form, Card, Modal, Spinner } from 'react-bootstrap';
 // import { useDispatch } from 'react-redux';
 import './GetTranslations.css';
 // import { saved } from '../../store/store';
@@ -12,6 +12,8 @@ const GetTranslations = () => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [ showModal, setShowModal ] = useState<boolean>(false); 
     const [ selectedTranslationKey, setSelectedTranslationKey ] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('')
 
     // const savedd = useSelector((state: RootState) => state.saved.saved )
     // console.log('saved', savedd)
@@ -34,6 +36,7 @@ const GetTranslations = () => {
             return;
         }
 
+        setLoading(true)
         try {
             const response = await fetch('https://suwg4eyhsj.execute-api.ap-south-1.amazonaws.com/getSavedTranslations', {
                 method: 'POST',
@@ -50,10 +53,15 @@ const GetTranslations = () => {
                 setTranslations(data);
                 // dispatch(saved(data));
                 // console.log('saved', savedd)
+                setLoading(false)
 
             } else {
                 console.error('Unexpected response format:', data);
                 setTranslations([]); // Ensure translations is always an array
+            }
+
+            if(data.length === 0){
+                setMessage('Please save some words to populate your Word Book.')
             }
         } catch (error) {
             console.error('Error fetching translations:', error);
@@ -71,14 +79,6 @@ const GetTranslations = () => {
         }
     }, [userId]);
 
-    const handleToggleTranslations = () => {
-        if (translations.length > 0) {
-            setTranslations([]);
-            setSearchTerm('');
-        } else if (userId) {
-            getTranslations(userId);
-        }
-    };
 
     const handleDeleteClick = (translationKey: string) => {
         setSelectedTranslationKey(translationKey);
@@ -87,6 +87,7 @@ const GetTranslations = () => {
 
     const handleConfirmDelete = async() => {
         if(userId && selectedTranslationKey){
+            setLoading(true)
             try{
                 const response = await fetch('https://suwg4eyhsj.execute-api.ap-south-1.amazonaws.com/deleteTranslations', {
                     method: 'POST',
@@ -98,6 +99,7 @@ const GetTranslations = () => {
                 if(response.ok){
                     setTranslations(translations.filter((t) => t.TranslationKey !== selectedTranslationKey));
                     alert ('Translation deleted successfully')
+                    setLoading(false)
                 }else{
                     alert('Failed to delete translation')
                 }
@@ -132,11 +134,11 @@ const GetTranslations = () => {
                     <>
                         <Row className='d-flex justify-content-center mt-4'>
                             <Col className='d-flex justify-content-center'>
-                                <Button variant='primary' onClick={handleToggleTranslations}>
-                                    {translations.length > 0 ? 'Hide translations' : 'See the saved translations'}
-                                </Button>
+                                {loading && (<Spinner />)}
                             </Col>
                         </Row>
+
+                        
     
                         {translations && translations.length > 0 ? (
                             <div>
@@ -174,14 +176,14 @@ const GetTranslations = () => {
                                             </Col>
                                         ))
                                     ) : (
-                                        <p>No translations found.</p>
+                                        <p>No saved translations found.</p>
                                     )}
                                 </Row>
                             </div>
                         ) : (
                             <Row className='d-flex justify-content-center mt-4'>
                                 <Col className='d-flex justify-content-center'>
-                                    <p>Please save translations to populate your workbook.</p>
+                                {message && (<p>{message}</p>)}
                                 </Col>
                             </Row>
                         )}
@@ -202,6 +204,13 @@ const GetTranslations = () => {
                     <Button variant='danger' onClick={handleConfirmDelete}>
                         Delete
                     </Button>
+
+                    <Row className='d-flex justify-content-center mt-4'>
+                            <Col className='d-flex justify-content-center'>
+                                {loading && (<Spinner />)}
+                            </Col>
+                        </Row>
+
                 </Modal.Footer>
             </Modal>
         </div>

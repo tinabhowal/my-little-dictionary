@@ -9,7 +9,7 @@ import { translationRequested, translationSuccessful, translationFailed } from '
 import ImageSlider from '../ImageSlider/ImageSlider';
 import NavbarComponent from '../Navbar/NavbarComponent';
 import './Home.css';
-import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Modal, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
@@ -31,6 +31,7 @@ const Home = () => {
   const error = useSelector((state: RootState) => state.translation.error);
   const [userHasConsented, setUserHasConsented] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(true);
+  const [saving, setSaving] = useState<boolean>(false);
 
   
   
@@ -144,8 +145,9 @@ const Home = () => {
     dispatch(translationSuccessful({ translation: text }));
   };
 
-  const handleSaveTranslation = () => {
-    fetch('https://suwg4eyhsj.execute-api.ap-south-1.amazonaws.com/saveTranslation', {
+  const handleSaveTranslation = async() => {
+    setSaving(true);
+    await fetch('https://suwg4eyhsj.execute-api.ap-south-1.amazonaws.com/saveTranslation', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${user}`,
@@ -163,6 +165,7 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log('Translation saved', data.message);
+        setSaving(false)
         alert('Translation saved successfully')
       })
       .catch((error) => {
@@ -339,6 +342,13 @@ style={{marginTop: '100px'}}>
       </Row>
 
       <Row className="mt-4 justify-content-center">
+        <Col className="d-flex justify-content-center">
+          {status === 'loading' && <Spinner animation="border" />}
+        </Col>
+      </Row>
+
+
+      <Row className="mt-4 justify-content-center">
         <Col md={8}>
           {status === 'succeeded' && translation && (
             <p>{translation}</p>
@@ -347,11 +357,18 @@ style={{marginTop: '100px'}}>
         </Col>
       </Row>
 
+      <Row className="mt-4 justify-content-center">
+        <Col className="d-flex justify-content-center">
+          {saving && <Spinner animation="border" />}
+        </Col>
+      </Row>
+
       {translation && (
         <Row className="mt-4 justify-content-center">
           <Button 
             variant="secondary" 
             onClick={handleSaveTranslation}
+            disabled={status === 'loading'}
           >
             Save
           </Button>
