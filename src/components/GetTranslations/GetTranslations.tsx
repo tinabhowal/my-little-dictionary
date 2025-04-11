@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { translation } from '../../types/types';
 import NavbarComponent from '../Navbar/NavbarComponent';
 import {Container, Row, Col, Button, InputGroup, Form, Card, Modal, Spinner } from 'react-bootstrap';
@@ -162,7 +163,10 @@ const GetTranslations = () => {
                                                 <Card className='card'>
                                                     <Card.Body>
                                                         <Card.Title>{t.Text}</Card.Title>
-                                                        <Card.Text>{t.Translation}</Card.Text>
+                                                        <Card.Text>
+                                                            <ReactMarkdown>{t.Translation}</ReactMarkdown>
+
+                                                            </Card.Text>
                                                         <div className="d-flex justify-content-center mt-3">
                                                             <Button
                                                                 variant='danger'

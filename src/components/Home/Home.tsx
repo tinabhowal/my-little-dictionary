@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch,  } from '../../store/store';
@@ -164,7 +165,7 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Translation saved', data.message);
+        // console.log('Translation saved', data.message);
         setSaving(false)
         alert('Translation saved successfully')
       })
@@ -351,7 +352,8 @@ style={{marginTop: '100px'}}>
       <Row className="mt-4 justify-content-center">
         <Col md={8}>
           {status === 'succeeded' && translation && (
-            <p>{translation}</p>
+            // <p>{translation}</p>
+            <ReactMarkdown>{translation}</ReactMarkdown>
           )}
           {status === 'failed' && <p className="text-danger">Error: {error}</p>}
         </Col>
